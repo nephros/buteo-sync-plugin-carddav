@@ -948,6 +948,7 @@ void CardDav::contactsResponse()
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     const QString addressbookUrl = reply->property("addressbookUrl").toString();
     const QByteArray data = reply->readAll();
+    qCDebug(lcCardDav) << Q_FUNC_INFO << "got data:" << QString::fromUtf8(data);
     if (reply->error() != QNetworkReply::NoError) {
         int httpError = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         qCWarning(lcCardDav) << Q_FUNC_INFO << "error:" << reply->error()

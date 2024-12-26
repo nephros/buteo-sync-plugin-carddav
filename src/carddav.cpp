@@ -55,6 +55,8 @@
 #include <seasidecache.h>
 #endif
 
+#include <algorithm>
+
 #include <qtcontacts-extensions.h>
 
 namespace {
@@ -933,7 +935,9 @@ void CardDav::fetchContacts(const QString &addressbookUrl, const QList<ReplyPars
         qCDebug(lcCardDav) << Q_FUNC_INFO << "fetching vcard data for" << contactUris.size() << "contacts";
         QStringList batchUris;
         if (contactUris.size() > 100) {
-            batchUris = contactUris.mid(0,100);
+            batchUris = contactUris;
+            std::random_shuffle(batchUris.begin(), batchUris.end());
+            batchUris = batchUris.mid(0,100);
         } else {
             batchUris = contactUris;
         }

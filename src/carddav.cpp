@@ -55,6 +55,7 @@
 #include <seasidecache.h>
 #endif
 
+#include <random>
 #include <algorithm>
 
 #include <qtcontacts-extensions.h>
@@ -936,8 +937,13 @@ void CardDav::fetchContacts(const QString &addressbookUrl, const QList<ReplyPars
         QStringList batchUris;
         if (contactUris.size() > 25) {
             batchUris = contactUris;
-            std::random_shuffle(batchUris.begin(), batchUris.end());
+
+            std::random_device rd;
+            std::mt19937 g(rd());
+            std::shuffle(batchUris.begin(), batchUris.end(), g);
+
             batchUris = batchUris.mid(0,25);
+            qCDebug(lcCardDav) << Q_FUNC_INFO << "list data:" << batchUris.join("\n");
         } else {
             batchUris = contactUris;
         }

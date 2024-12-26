@@ -931,7 +931,15 @@ void CardDav::fetchContacts(const QString &addressbookUrl, const QList<ReplyPars
     } else {
         // fetch the full contact data for additions/modifications.
         qCDebug(lcCardDav) << Q_FUNC_INFO << "fetching vcard data for" << contactUris.size() << "contacts";
-        QNetworkReply *reply = m_request->contactMultiget(m_serverUrl, addressbookUrl, contactUris);
+        QStringList batchUris;
+        if (contactUris.size() > 100) {
+            batchUris = contactUris.mid(0,100);
+        } else {
+            batchUris = contactUris;
+        }
+        qCDebug(lcCardDav) << Q_FUNC_INFO << "using a batch of" << batchUris.size() << "contacts";
+        //QNetworkReply *reply = m_request->contactMultiget(m_serverUrl, addressbookUrl, contactUris);
+        QNetworkReply *reply = m_request->contactMultiget(m_serverUrl, addressbookUrl, batchUris);
         if (!reply) {
             emit error();
             return;

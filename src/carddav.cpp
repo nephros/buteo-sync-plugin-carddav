@@ -934,10 +934,10 @@ void CardDav::fetchContacts(const QString &addressbookUrl, const QList<ReplyPars
         // fetch the full contact data for additions/modifications.
         qCDebug(lcCardDav) << Q_FUNC_INFO << "fetching vcard data for" << contactUris.size() << "contacts";
         QStringList batchUris;
-        if (contactUris.size() > 100) {
+        if (contactUris.size() > 25) {
             batchUris = contactUris;
             std::random_shuffle(batchUris.begin(), batchUris.end());
-            batchUris = batchUris.mid(0,100);
+            batchUris = batchUris.mid(0,25);
         } else {
             batchUris = contactUris;
         }
